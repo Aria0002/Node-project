@@ -1,0 +1,58 @@
+<h1>Hi <%= name %></h1>
+<head>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+  />
+</head>
+<div class="container">
+  <h1>Task manager:</h1>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Task name" id="name" />
+    <div>
+      <button class="btn btn-outline-danger" type="button" id="add-task">
+        Add to list
+      </button>
+    </div>
+  </div>
+  <ul class="all-list" id="list"></ul>
+  <form action="/logout?_method=DELETE" method="POST">
+    <button class="btn btn-warning mt-5" type="submit">Log Out</button>
+  </form>
+</div>
+
+<script>
+  var items = [];
+  var listHolder = document.getElementById("list");
+  var addTodo = document.getElementById("add-task");
+
+  loadList = () => {
+    listHolder.innerHTML = "";
+    items.forEach((element, index) => {
+      let listItem = document.createElement("li");
+      listItem.className = "list";
+      listItem.innerHTML = element;
+      listItem.addEventListener("dblclick", () => {
+        items.splice(index, 1);
+        loadList();
+      });
+
+      listHolder.appendChild(listItem);
+    });
+  };
+
+  addTodo.addEventListener("click", () => {
+    let writtentask = document.getElementById("name");
+    let taskname = writtentask.value;
+
+    if (taskname != "") {
+      items.push(taskname);
+      writtentask.value = "";
+      loadList();
+    } else {
+      alert("Please put your task name");
+    }
+  });
+</script>
